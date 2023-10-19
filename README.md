@@ -16,7 +16,7 @@ This code would create a statically array with 5 empty slots, <00 00 00 00 00>, 
 
 ## Search
 
-A **binary search** is a search that always have 2 possibility "thus the name _binary_", it's either in the part i'm looking for or not.
+A **binary search** is a search that always have 2 possibility thus the name "_binary_", it's either in the part i'm looking for or not.
 0 | 1.
 In a real case it would be a ternary because you can be on the "it is what i'm looking for":
 
@@ -83,7 +83,7 @@ Complexity of O($\sqrt{n}$)
 
 By definition a sorted array always have Xi <= Xi + 1
 
-### Bubble Sort
+### Bubble Sort Algorithms
 
 _Bubble Sort_ could be thaught this way :
 Imagine you have to add every number from 1 to 100. You would do 1 .. 100 = 101 | 2 .. 99 = 101 | 3.. 98 = 101 all the way to 50 .. 51 = 101 .
@@ -219,4 +219,130 @@ export class Stack<T> {
         return this.head?.value;
     }
 }
+```
+
+#### ArrayList
+In javascript **array** are **ArrayList**, meaning they can grow in capacity, for exemple you could have : ArrayList[ 5 , _ , _ , _] it is a array of number that have 4 of capacity but a length of 1 since only 1 "slot" is being used. If you would fill the 3 last slot with [5, 8, 3, 9] and still want to push(6) the number 6 in this array it would automatically increase his capacity [5, 8, 3, 9, _, _, _,] for exemple then push the number 6 at the 4th index.
+As a note to remember **Array** are momory defined and **List** can grow
+
+## Recursion
+The definition of recursion is a function that call itself until it met his "_base case_".
+Here is simple exemple :
+Sum the number between 0 to n.
+```typescript
+function sum(n: number): number {
+    if (n === 1 ) {
+        return 1;
+    }
+
+    return n + sum(n - 1);
+}
+```
+
+One simple rule is _always* know your base case. here n = 1, meaning that we went to every number between n and 1.
+There is always 3 steps in recursion (pre, recurse, post).
+Recursion will create a **Stack** of functions call then reverse itself with the return value from the last invoked function.
+
+### Maze Solver | Path Finding
+Let's imagine that we are a array of string:
+[
+    "#,#,#,#,#,#, E, #",
+    "#, , , , , ,  , #",
+    "#,S,#,#,#,#, #, #",
+]
+We want to go from the starting position S to the exit E.
+We cannot go to wall. What are our base case ? :
+
+1. we are off the map
+2. it's a wall
+3. it's the end
+4. if we have seen the location
+
+```typescript
+const dir = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+function walk(maze: string[], wall: string, curr: Point, end: Point, seen: boolean[][], path: Point[]): boolean {
+    //base case 1, off the map
+    if (curr.x < 0 || curr.x >= maze[0].length ||
+        curr.y < 0 || curr.y >= maze[0].length ) {
+            return false;
+        }
+    //base case 2, on a wall
+    if (maze[curr.x][curr.y] === wall) {
+        return false;
+    }
+    //base case 3, it's the end
+    if (curr.x === end.x && curr.y === end.y) {
+        path.push(end)
+        return true;
+    }
+    //base case 4, we are seen the location
+    if (seen[curr.y][curr.x]) {
+        return false;
+    }
+    //3 recurses steps
+    //pre
+    seen[curr.y][curr.x] = true;
+    path.push(curr)
+    //recurse
+    for (let i = 0; i < dir.length ; ++i) {
+        const [x, y] = dir[i];
+        if (walk(maze, wall, { x: curr.x + x, y: curr.y + y}, end, seen, path)) {
+            return true
+        }
+    }
+    //post
+    path.pop()
+    return false
+}
+export default function maze_solver(maze: string[], wall: string, start: Point, exit: Point): Point[] {
+    const seen: boolean[][];
+    const path: Point[];
+
+    for ( let i = 0; i < maze.length; ++i) {
+        seen.push(new Array(maze[0].length).fill(false));
+    }
+
+    seen(maze, wall, start, end, seen, path);
+}
+```
+
+### Quick Sort Algorithms
+Quick sort is a sorting algorithms that use a pivot and recursion to sort an array of number.
+Here is a implementation:
+```typescript
+function qs(arr: number[], lo: number, hi: number): void {
+    if (lo >= hi) {
+        return
+    }
+
+    const pivotIdx = partition(arr, lo, hi);
+
+    qs(arr, lo, pivotIdx - 1 );
+    qs(arr, pivotIdx + 1, hi);
+}
+
+function partition(arr: number[], lo: number, hi: number): number {
+    const pivot = arr[hi];
+
+    let idx: = -1;
+    for (let i = 0; i< hi; ++i) {
+        if (arr[i] <= pivot) {
+        idx++;
+        const tmp = arr[i];
+        arr[i] = arr[idx];
+        arr[idx] = tmp;
+        }
+    }
+
+    idx++;
+    arr[hi] = arr[idx];
+    arr[idx] = pivot;
+
+    return idx;
+}
+
+export default function quick_sort(arr: number[]): void {
+    qs(arr, 0, arr.length - 1);
+}
+
 ```
