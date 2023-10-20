@@ -191,7 +191,7 @@ export class Stack<T> {
     push(item: T): void {
        const node = {value: item} as Node<T>;
 
-       this.length--;
+       this.length++;
        if (!this.head) {
             this.head = node;
             return;
@@ -308,9 +308,14 @@ export default function maze_solver(maze: string[], wall: string, start: Point, 
 ```
 
 ### Quick Sort Algorithms
+
 Quick sort is a sorting algorithms that use a pivot and recursion to sort an array of number.
 Here is a implementation:
+
 ```typescript
+
+const arr = [7, 5, 9, 11, 3, 6, 18, 4];
+
 function qs(arr: number[], lo: number, hi: number): void {
     if (lo >= hi) {
         return
@@ -325,7 +330,7 @@ function qs(arr: number[], lo: number, hi: number): void {
 function partition(arr: number[], lo: number, hi: number): number {
     const pivot = arr[hi];
 
-    let idx: = -1;
+    let idx = -1;
     for (let i = 0; i< hi; ++i) {
         if (arr[i] <= pivot) {
         idx++;
