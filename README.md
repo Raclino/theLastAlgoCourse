@@ -244,6 +244,7 @@ There is always 3 steps in recursion (pre, recurse, post).
 Recursion will create a **Stack** of functions call then reverse itself with the return value from the last invoked function.
 
 ### Maze Solver | Path Finding
+
 Let's imagine that we are a array of string:
 [
     "#,#,#,#,#,#, E, #",
@@ -251,7 +252,7 @@ Let's imagine that we are a array of string:
     "#,S,#,#,#,#, #, #",
 ]
 We want to go from the starting position S to the exit E.
-We cannot go to wall. What are our base case ? :
+We cannot go throught wall. What are our base case ? :
 
 1. we are off the map
 2. it's a wall
@@ -260,33 +261,33 @@ We cannot go to wall. What are our base case ? :
 
 ```typescript
 const dir = [[-1, 0], [1, 0], [0, -1], [0, 1]]
-function walk(maze: string[], wall: string, curr: Point, end: Point, seen: boolean[][], path: Point[]): boolean {
+function walk(maze: string[], wall: string, current: Point, end: Point, seen: boolean[][], path: Point[]): boolean {
     //base case 1, off the map
-    if (curr.x < 0 || curr.x >= maze[0].length ||
-        curr.y < 0 || curr.y >= maze[0].length ) {
+    if (current.x < 0 || current.x >= maze[0].length ||
+        current.y < 0 || current.y >= maze[0].length ) {
             return false;
         }
     //base case 2, on a wall
-    if (maze[curr.x][curr.y] === wall) {
+    if (maze[current.x][current.y] === wall) {
         return false;
     }
     //base case 3, it's the end
-    if (curr.x === end.x && curr.y === end.y) {
+    if (current.x === end.x && current.y === end.y) {
         path.push(end)
         return true;
     }
     //base case 4, we are seen the location
-    if (seen[curr.y][curr.x]) {
+    if (seen[current.y][current.x]) {
         return false;
     }
     //3 recurses steps
     //pre
-    seen[curr.y][curr.x] = true;
-    path.push(curr)
+    seen[current.y][current.x] = true;
+    path.push(current)
     //recurse
     for (let i = 0; i < dir.length ; ++i) {
         const [x, y] = dir[i];
-        if (walk(maze, wall, { x: curr.x + x, y: curr.y + y}, end, seen, path)) {
+        if (walk(maze, wall, { x: current.x + x, y: current.y + y}, end, seen, path)) {
             return true
         }
     }
@@ -299,10 +300,10 @@ export default function maze_solver(maze: string[], wall: string, start: Point, 
     const path: Point[];
 
     for ( let i = 0; i < maze.length; ++i) {
-        seen.push(new Array(maze[0].length).fill(false));
+        seen.push(new Array(maze[i].length).fill(false));
     }
 
-    seen(maze, wall, start, end, seen, path);
+    walk(maze, wall, start, end, seen, path);
 }
 ```
 
