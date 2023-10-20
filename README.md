@@ -4,6 +4,7 @@ This repository purpose is to keep track of some notes i took while watching and
 Every exemples code will be in typescript for comprehensive reasons
 
 ## Array
+
 ### Array Data Structures
 
 An array in javascript is a _list_ not a Array, by definition an Array has limited defined space allocation in memory. To create a **real** array in Javascript would be created with the Array() constructor like so:
@@ -42,7 +43,8 @@ function bs_list(haystack: number[], needle: number): boolean {
     return false;
 };
 ```
-Complexity of O(n).
+
+Complendy of O(n).
 
 ### The two crystal ball problem
 
@@ -77,7 +79,7 @@ export function two_crystal_ball(breaks: boolean[]): number {
 }
 ```
 
-Complexity of O($\sqrt{n}$)
+Complendy of O($\sqrt{n}$)
 
 ## Sort
 
@@ -89,7 +91,7 @@ _Bubble Sort_ could be thaught this way :
 Imagine you have to add every number from 1 to 100. You would do 1 .. 100 = 101 | 2 .. 99 = 101 | 3.. 98 = 101 all the way to 50 .. 51 = 101 .
 The mathematical method would be 101 * 50 === (N+1) * N/2 === N(N+1)/2
 You drop the constants "2", you are left with N² + N, you drop the insignificants values (the smallest one).
-The final complexity of Bubble Sort = O(N²).
+The final complendy of Bubble Sort = O(N²).
 
 ```typescript
 export function bubble_sort(array: number[]): void {
@@ -108,6 +110,7 @@ export function bubble_sort(array: number[]): void {
 ### Link list Data Structure
 
 Inserting in a link list is always O(1)
+
 ```typescript
 interface linkedList<T> {
     get length(): number;
@@ -222,13 +225,16 @@ export class Stack<T> {
 ```
 
 #### ArrayList
+
 In javascript **array** are **ArrayList**, meaning they can grow in capacity, for exemple you could have : ArrayList[ 5 , _ , _ , _] it is a array of number that have 4 of capacity but a length of 1 since only 1 "slot" is being used. If you would fill the 3 last slot with [5, 8, 3, 9] and still want to push(6) the number 6 in this array it would automatically increase his capacity [5, 8, 3, 9, _, _, _,] for exemple then push the number 6 at the 4th index.
 As a note to remember **Array** are momory defined and **List** can grow
 
 ## Recursion
+
 The definition of recursion is a function that call itself until it met his "_base case_".
 Here is simple exemple :
 Sum the number between 0 to n.
+
 ```typescript
 function sum(n: number): number {
     if (n === 1 ) {
@@ -251,7 +257,7 @@ Let's imagine that we are a array of string:
     "#, , , , , ,  , #",
     "#,S,#,#,#,#, #, #",
 ]
-We want to go from the starting position S to the exit E.
+We want to go from the starting position S to the end E.
 We cannot go throught wall. What are our base case ? :
 
 1. we are off the map
@@ -260,51 +266,57 @@ We cannot go throught wall. What are our base case ? :
 4. if we have seen the location
 
 ```typescript
-const dir = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+
+type Point = { x: number; y: number };
+type Direction = [number, number];
+const dir: Direction = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+
 function walk(maze: string[], wall: string, current: Point, end: Point, seen: boolean[][], path: Point[]): boolean {
     //base case 1, off the map
     if (current.x < 0 || current.x >= maze[0].length ||
-        current.y < 0 || current.y >= maze[0].length ) {
+        current.y < 0 || current.y >= maze[0].length ||
+        //base case 4, we are seen the location
+        seen[current.y][current.x] ||
+        //base case 2, on a wall
+        maze[current.x][current.y] === wall;
+        ) {
             return false;
-        }
-    //base case 2, on a wall
-    if (maze[current.x][current.y] === wall) {
-        return false;
-    }
+        };
+
     //base case 3, it's the end
     if (current.x === end.x && current.y === end.y) {
         path.push(end)
         return true;
-    }
-    //base case 4, we are seen the location
-    if (seen[current.y][current.x]) {
-        return false;
-    }
+    };
+
     //3 recurses steps
     //pre
     seen[current.y][current.x] = true;
     path.push(current)
     //recurse
-    for (let i = 0; i < dir.length ; ++i) {
-        const [x, y] = dir[i];
-        if (walk(maze, wall, { x: current.x + x, y: current.y + y}, end, seen, path)) {
+    for (const [dx, dy] of dir) {
+        if (walk(maze, wall, { x: current.x + dx, y: current.y + dy}, end, seen, path)) {
             return true
-        }
-    }
+        };
+    };
     //post
-    path.pop()
-    return false
-}
-export default function maze_solver(maze: string[], wall: string, start: Point, exit: Point): Point[] {
+    path.pop();
+    return false;
+};
+
+export default function maze_solver(maze: string[], wall: string, start: Point, end: Point): Point[] {
     const seen: boolean[][];
     const path: Point[];
 
     for ( let i = 0; i < maze.length; ++i) {
         seen.push(new Array(maze[i].length).fill(false));
-    }
+    };
 
-    walk(maze, wall, start, end, seen, path);
-}
+    if (walk(maze, wall, start, end, seen, path)) {
+        return path;
+    };
+
+};
 ```
 
 ### Quick Sort Algorithms
