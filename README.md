@@ -79,7 +79,7 @@ export function two_crystal_ball(breaks: boolean[]): number {
 }
 ```
 
-Complendy of O($\sqrt{n}$)
+Complexity of O($\sqrt{n}$)
 
 ## Sort
 
@@ -88,7 +88,7 @@ By definition a sorted array always have Xi <= Xi + 1
 ### Bubble Sort Algorithms
 
 _Bubble Sort_ could be thaught this way :
-Imagine you have to add every number from 1 to 100. You would do 1 .. 100 = 101 | 2 .. 99 = 101 | 3.. 98 = 101 all the way to 50 .. 51 = 101 .
+Imagine you have to add every number from 1 to 100. You would do 1 .. 100 = 101 | 2 + 99 = 101 | 3 + 98 = 101 all the way to 50 + 51 = 101 .
 The mathematical method would be 101 * 50 === (N+1) * N/2 === N(N+1)/2
 You drop the constants "2", you are left with N² + N, you drop the insignificants values (the smallest one).
 The final complendy of Bubble Sort = O(N²).
@@ -213,7 +213,7 @@ export class Stack<T> {
         }
 
             const head = this.head as Node<T>;
-            this.head = head.perv;
+            this.head = head.prev;
 
             return head?.value;
     }
@@ -245,13 +245,14 @@ function sum(n: number): number {
 }
 ```
 
-One simple rule is _always* know your base case. here n = 1, meaning that we went to every number between n and 1.
+One simple rule is **always** know your base case.
+Here n = 1, meaning that we went to every number between n and 1.
 There is always 3 steps in recursion (pre, recurse, post).
 Recursion will create a **Stack** of functions call then reverse itself with the return value from the last invoked function.
 
 ### Maze Solver | Path Finding
 
-Let's imagine that we are a array of string:
+Let's imagine that we are given a array of string:
 [
     "#,#,#,#,#,#, E, #",
     "#, , , , , ,  , #",
@@ -269,7 +270,7 @@ We cannot go throught wall. What are our base case ? :
 
 type Point = { x: number; y: number };
 type Direction = [number, number];
-const dir: Direction = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+const dir: Direction[] = [[-1, 0], [1, 0], [0, -1], [0, 1]];
 
 function walk(maze: string[], wall: string, current: Point, end: Point, seen: boolean[][], path: Point[]): boolean {
     //base case 1, off the map
@@ -363,4 +364,141 @@ export default function quick_sort(arr: number[]): void {
     qs(arr, 0, arr.length - 1);
 }
 
+```
+
+## Doubly Linked List Data Strucutre
+
+```typescript
+type Node<T> = {
+    value: T,
+    prev?: Node<T>,
+    next?: Node <T>,
+}
+
+export default class DoublyLinkedList<T> {
+    public length: number;
+    private head?: Node<T>;
+    private tail?: Node<T>;
+
+    constructor() {
+        this.length = 0;
+        this.head = undefined;
+        this.tail = undefined;
+    }
+
+    prepend(item: T): void {
+        const node = {value: item} as Node<T>;
+
+        this.length++;
+        if (!this.head) {
+            this.head = this.tail = node;
+            return
+        }
+
+        node.next = this.head;
+        this.head.prev = node;
+        this.head = node
+    }
+
+    insertAt(item: T, idx: number): void {
+
+        if (idx > this.length) {
+            throw new Error("oh no")
+        } else if (idx = this.length) {
+            this.append(item);
+            return;
+        } else if (idx = 0) {
+            this.prepend(item);
+            return;
+        }
+
+        this.length++;
+
+        let curr = this.head;
+        const curr = this.getAt(idx) as Node<T>;
+
+        const node = {value: item} as Node<T>;
+
+        node.next = curr;
+        node.prev = curr.prev;
+        curr.prev = node;
+
+        if (curr.prev) {
+            curr.prev.next = curr;
+        }
+    }
+
+    append(item: T): void {
+        this.length++;
+        const node = {value: item} as Node<T>;
+        if (!this.tail) {
+            this.head = this.tail = node;
+            return;
+        }
+
+        node.prev = this.tail;
+        this.tail.next = node;
+        this.tail = node;
+    }
+
+    remove(item: T): T | undefined {
+
+        if (!curr) {
+            return undetind;
+        }
+
+        this.length--;
+
+        if (this.length === 0) {
+            const out = this.head?.value;
+            this.head = this.tail = undefined;
+            return out;
+        }
+
+        if (curr.prev) {
+            curr.prev = curr.next;
+        }
+
+        if (curr.next) {
+            curr.next = curr.prev;
+        }
+
+        if (curr === this.head) {
+            curr.head = curr.next;
+        }
+
+        if (curr === this.tail) {
+            curr.tail = curr.prev;
+        }
+
+        curr.prev = curr.next = undefined;
+        return current.value;
+    }
+
+    get(idx: number): T | undefined {
+        return node = this.getAt()
+    }
+
+    removeAt(idx: number): T | undefined {
+        const node = this.getAt(idx);
+
+        if (!node) {
+            return undefined;
+        }
+    }
+
+    private removeNode(node: Node<T>): T | undefined{
+        this.length--;
+
+        if (this.length === 0) {
+           const out = this.head?.value;
+           this.head = this.tail = undefined;
+           return out;
+        }
+    }
+
+    private getAt(idx: number) {
+    }
+
+}
 ```
