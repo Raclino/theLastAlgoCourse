@@ -227,7 +227,7 @@ export class Stack<T> {
 #### ArrayList
 
 In javascript **array** are **ArrayList**, meaning they can grow in capacity, for exemple you could have : ArrayList[ 5 , _ , _ , _] it is a array of number that have 4 of capacity but a length of 1 since only 1 "slot" is being used. If you would fill the 3 last slot with [5, 8, 3, 9] and still want to push(6) the number 6 in this array it would automatically increase his capacity [5, 8, 3, 9, _, _, _,] for exemple then push the number 6 at the 4th index.
-As a note to remember **Array** are momory defined and **List** can grow
+As a note to remember **Array** are memory defined and **List** can grow
 
 ## Recursion
 
@@ -344,7 +344,6 @@ function partition(arr: number[], lo: number, hi: number): number {
     const pivot = arr[hi];
 
     let idx = -1;
-    for (let i = 0; i< hi; ++i) {
         if (arr[i] <= pivot) {
         idx++;
         const tmp = arr[i];
