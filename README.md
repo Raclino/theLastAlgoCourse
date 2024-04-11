@@ -22,13 +22,13 @@ A **binary search** is a search that always have 2 possibility thus the name "_b
 In a real case it would be a ternary because you can be on the "it is what i'm looking for":
 
 ```typescript
-function bs_list(haystack: number[], needle: number): boolean {
+function binarySearch_list(haystack: number[], needle: number): boolean {
 
     let low = 0;
     let high = haystack.length;
 
     do {
-        const medimum = Math.floor(low + (high - low) / 2);
+        const medium = Math.floor(low + (high - low) / 2);
         const value = haystack[medium];
 
         if(value === needle) {
@@ -42,6 +42,8 @@ function bs_list(haystack: number[], needle: number): boolean {
 
     return false;
 };
+
+const haystack = [9, 25, 44, 63, 91, 95, 116, 118, 172, 207, 226, 272, 287, 306, 309, 312, 365, 370, 384, 396, 401, 437, 479, 482, 500, 501, 535, 541, 580, 599, 607, 639, 647, 652, 674, 725, 744, 770, 779, 790, 805, 806, 828, 847, 876, 893, 933, 956, 960, 976];
 ```
 
 Complendy of O(n).
@@ -365,7 +367,7 @@ export default function quick_sort(arr: number[]): void {
 
 ```
 
-## Doubly Linked List Data Strucutre
+## Doubly Linked List Data Structure
 
 ```typescript
 type Node<T> = {
@@ -422,11 +424,10 @@ export default class DoublyLinkedList<T> {
         node.prev = curr.prev;
         curr.prev = node;
 
-        if (curr.prev) {
-            curr.prev.next = curr;
+        if (node.prev) {
+            node.prev.next = curr;
         }
     }
-
     append(item: T): void {
         this.length++;
         const node = {value: item} as Node<T>;
@@ -443,7 +444,7 @@ export default class DoublyLinkedList<T> {
     remove(item: T): T | undefined {
 
         if (!curr) {
-            return undetind;
+            return undefind;
         }
 
         this.length--;
@@ -484,6 +485,8 @@ export default class DoublyLinkedList<T> {
         if (!node) {
             return undefined;
         }
+
+        return removeNode(node);
     }
 
     private removeNode(node: Node<T>): T | undefined{
@@ -494,10 +497,47 @@ export default class DoublyLinkedList<T> {
            this.head = this.tail = undefined;
            return out;
         }
+
+        if (node.prev) {
+            node.prev.next = node.next;
+        }
+
+        if (node.next) {
+            node.next.prev = node.prev;
+        }
+
+        if (curr === this.head) {
+            curr.head = curr.next;
+        }
+
+        if (curr === this.tail) {
+            curr.tail = curr.prev;
+        }
+
+        curr.prev = curr.next = undefined;
+        return current.value;
     }
 
-    private getAt(idx: number) {
+    private getAt(idx: number): Node<T> | undefined {
+        let curr = this.head;
+        for (let i = 0; curr && i < idx ; ++i){
+            curr = curr.next;
+        }
+        return curr;
     }
 
 }
 ```
+
+## Trees Data Structure
+
+Some terminology :
+
+- root : The most parent node. The first. Adam.
+- height: The longest path from the root to the most child node.
+- binary tree: a tree in which has at most 2 children. at least 0 children.
+- general tree: a tree with 0 or more children.
+- binary search tree: a tree in which has a specific ordering to the node and at most 2 children.
+- leaves: a node whitout children.
+- balanded: a tree is _perfectly_ balanced when any node's left and right children have the same height.
+- branching factor: The amount of children a tree has.
