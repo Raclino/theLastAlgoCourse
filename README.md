@@ -541,3 +541,99 @@ Some terminology :
 - leaves: a node whitout children.
 - balanded: a tree is _perfectly_ balanced when any node's left and right children have the same height.
 - branching factor: The amount of children a tree has.
+
+### Tree Traversal
+
+A traversal is when you attempt to visit every single node in you tree.
+
+There are 3 type of traversal :
+
+- **pre-order** : I first visit the node, then i recurse on the left child, when i hit the leaves, i take one step back and visit the right child etc until the whole tree is visited.The _root_ end up in the begining.
+
+- **in order** : You first go to the _leaves_ at the maximum _height_ then you start recursing and going right. The _root_ end up in the middle.
+
+- **post order** : You first go to the _leaves_ at the maximum _height on the left, and take everything at this "floor" then the same on the other side of the tree and you recurse etc. All _leaves_ at Bottom level then the bottom -1 level etc. The _root_ end up at the end.
+
+Those operation are in **linear**, O(n). The time double if the lenght double.
+
+### Pre order search on binary tree
+
+```typescript
+function walk(curr: BinaryNode<number> | undefined, path: number[]): number[] {
+    if (!curr) {
+    return path;
+    }
+
+    //recurse
+    //pre
+    path.push(curr.value);
+
+    //recurse
+    walk(curr.left, path);
+    walk(curr.right, path);
+
+    //post
+    return path;
+}
+export default function pre_order_search(head: BinaryNode<number>): number[] {
+    return walk(head, []);
+};
+
+
+```
+
+### In order search on binary tree
+
+```typescript
+function walk(curr: BinaryNode<number> | undefined, path: number[]): number[] {
+    if (!curr) {
+    return path;
+    }
+
+    //recurse
+
+    //recurse
+    walk(curr.left, path);
+
+    //pre
+    path.push(curr.value);
+
+    walk(curr.right, path);
+
+    //post
+    return path;
+}
+
+export default function in_order_search(head: BinaryNode<number>): number[] {
+    return walk(head, []);
+};
+
+
+```
+
+### Post order search on binary tree
+
+```typescript
+function walk(curr: BinaryNode<number> | undefined, path: number[]): number[] {
+    if (!curr) {
+    return path;
+    }
+
+    //recurse
+
+    //recurse
+    walk(curr.left, path);
+    walk(curr.right, path);
+
+    //post
+    path.push(curr.value);
+    return path;
+}
+
+export default function post_order_search(head: BinaryNode<number>): number[] {
+    return walk(head, []);
+};
+
+```
+
+Those travels are named **Depth first search** because you "visit" the Bottom of the tree, on the _leaves_ node then you go up. **DFS** is like a **Stack**. You visit, can't go to the next anymore you pop() and push() the level + 1
